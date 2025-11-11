@@ -77,13 +77,14 @@
         }
         .card-content h1
         {
-            color: #6a1b9a;
+            color: #6a1b9a; 
             font-size: 2.5em;
             margin-bottom: 10px;
             display: flex; 
             align-items: center;
             justify-content: center;
             gap: 10px; 
+            animation: text-glow 3s infinite alternate; 
         }
         .card-content h2
         {
@@ -104,7 +105,6 @@
             color: #9c27b0;
             font-size: 1em;
         }
-        
         @keyframes shake
         {
             0%, 100% {transform: translateX(0);}
@@ -115,8 +115,8 @@
         {
             animation: shake 0.5s;
         }
-
-        .snowflake {
+        .snowflake 
+        {
             position: fixed;
             top: -10px;
             border-radius: 50%;
@@ -125,28 +125,44 @@
             animation: fall linear infinite;
             z-index: 1;
         }
-
-        @keyframes fall {
+        @keyframes fall 
+        {
             0% { transform: translateY(0); }
             100% { transform: translateY(100vh); }
         }
-        
-        .tiger-icon {
+        .tiger-icon 
+        {
             font-size: 1.5em; 
             animation: blink-tiger 1.5s infinite alternate; 
             display: inline-block; 
         }
-
-        @keyframes blink-tiger {
+        @keyframes blink-tiger 
+        {
             0% { opacity: 0.5; transform: scale(1); }
             50% { opacity: 1; transform: scale(1.1); } 
             100% { opacity: 0.5; transform: scale(1); }
         }
-
+        @keyframes text-glow 
+        {
+            0% 
+            { 
+                color: #6a1b9a; 
+                text-shadow: 0 0 5px rgba(106, 27, 154, 0.7), 0 0 10px rgba(106, 27, 154, 0.5); 
+            }
+            50% 
+            { 
+                color: #e91e63; 
+                text-shadow: 0 0 10px rgba(233, 30, 99, 0.9), 0 0 20px rgba(233, 30, 99, 0.7); 
+            }
+            100% 
+            { 
+                color: #6a1b9a; 
+                text-shadow: 0 0 5px rgba(106, 27, 154, 0.7), 0 0 10px rgba(106, 27, 154, 0.5); 
+            }
+        }
     </style>
 </head>
 <body>
-    
     <audio id="birthdayAudio" src="sinh_nhat.mp3" preload="auto"></audio>
     <div class="container">
         <div id="lockScreen" class="lock-screen">
@@ -170,11 +186,11 @@
     </div>
     <script>
         const CORRECT_PASSWORD="2311";
-        const birthdayAudio = document.getElementById('birthdayAudio'); // Lấy phần tử audio
-        
+        const birthdayAudio = document.getElementById('birthdayAudio');
+        const passwordInput = document.getElementById('passwordInput');
         function checkPassword()
         {
-            const input=document.getElementById('passwordInput').value;
+            const input=passwordInput.value;
             const lockScreen=document.getElementById('lockScreen');
             const cardContent=document.getElementById('cardContent');
             if(input==CORRECT_PASSWORD)
@@ -182,19 +198,16 @@
                 lockScreen.style.display='none';
                 cardContent.style.display='block';
                 document.body.style.backgroundColor='#e1bee7';
-                
-                createSnowflakes(50); 
-                
-                // PHÁT ÂM THANH
-                birthdayAudio.play().catch(error => {
+                createSnowflakes(50);
+                birthdayAudio.play().catch(error => 
+                {
                     console.log('Không thể phát âm thanh tự động:', error);
-                    // Có thể thêm thông báo hoặc icon loa nhấp nháy ở đây nếu cần
                 }); 
                 
             }
             else
             {
-                const inputElement=document.getElementById('passwordInput');
+                const inputElement=passwordInput;
                 inputElement.classList.add('shake');
                 setTimeout(()=>
                 {
@@ -202,39 +215,41 @@
                 }, 500)
             }
         }
-
-        function createSnowflakes(count) {
-            const colors = [
+        function createSnowflakes(count) 
+        {
+            const colors = 
+            [
                 '#FFEB3B', '#F44336', '#E91E63', '#9C27B0', 
                 '#2196F3', '#00BCD4', '#4CAF50', '#FF9800', '#FFFFFF'
             ];
-
-            for (let i = 0; i < count; i++) {
+            for (let i = 0; i < count; i++) 
+            {
                 const snowflake = document.createElement('div');
                 snowflake.classList.add('snowflake');
-                
                 const size = Math.random() * 5 + 5; 
                 snowflake.style.width = `${size}px`;
                 snowflake.style.height = `${size}px`;
-
                 snowflake.style.left = `${Math.random() * 100}%`;
-                
                 const duration = Math.random() * 10 + 5; 
                 snowflake.style.animationDuration = `${duration}s`;
-                
                 snowflake.style.animationDelay = `-${Math.random() * 5}s`;
-
                 const randomColor = colors[Math.floor(Math.random() * colors.length)];
                 snowflake.style.backgroundColor = randomColor;
-                snowflake.style.boxShadow = `0 0 5px ${randomColor}`; 
-
+                snowflake.style.boxShadow = `0 0 5px ${randomColor}`;
                 document.body.appendChild(snowflake);
-                
-                snowflake.addEventListener('animationend', () => {
+                snowflake.addEventListener('animationend', () => 
+                {
                     snowflake.remove();
                 });
             }
         }
+        passwordInput.addEventListener('keypress', function(event) 
+        {
+            if (event.key === 'Enter') { 
+                event.preventDefault();
+                checkPassword();
+            }
+        });
     </script>
 </body>
 </html>
