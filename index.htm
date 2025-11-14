@@ -99,6 +99,7 @@
             line-height: 1.6;
             margin-bottom: 20px;
         }
+        
         .signature
         {
             font-style: italic;
@@ -166,26 +167,26 @@
     <audio id="birthdayAudio" src="sinh_nhat.mp3" preload="auto"></audio>
     <div class="container">
         <div id="lockScreen" class="lock-screen">
-            <h3>Nhập mật mã để mở thiệp</h3>
-            <p class="hint">Gợi ý: Ngày sinh</p>
-            <input type="password" id="passwordInput" placeholder="Mật mã...">
+            <h3>Nhập mật khẩu để mở thiệp</h3>
+            <p class="hint">Gợi ý: Ngày tháng năm sinh</p>
+            <input type="password" id="passwordInput" placeholder="Mật khẩu...">
             <button id="openButton" onclick="checkPassword()">Mở Thiệp</button>
         </div>
         <div id="cardContent" class="card-content">
             <h1>
                 <span class="tiger-icon">🐯</span> Happy Birthday <span class="tiger-icon">🐯</span>
             </h1>
-            <h2>Gửi đến [Tên người nhận]</h2>
+            <h2>Gửi đến Hợp,</h2>
             <p class="message">
-                [Lời chúc sinh nhật của bạn]
+                Chúc Hợp sinh nhật tuổi 18 vui vẻ nhé. Tuổi mới xinh đẹp, học thật tốt nha. Trân có nhờ chị Linh đưa quà cho Hợp, hy vọng Hợp sẽ thích món quà đó. Hy vọng sẽ được gặp lại Hợp vào 1 ngày nào đó^^.💜
             </p>
             <p class="signature">
-                Gửi từ [Tên người gửi]
+                Gửi từ Trân.
             </p>
         </div>
     </div>
     <script>
-        const CORRECT_PASSWORD="2311";
+        const CORRECT_PASSWORD="23112007";
         const birthdayAudio = document.getElementById('birthdayAudio');
         const passwordInput = document.getElementById('passwordInput');
         function checkPassword()
