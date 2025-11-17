@@ -53,6 +53,7 @@
             font-size: 1.2em;
             width: 60%;
             margin-bottom: 20px;
+            transition: border-color 0.3s;
         }
         #openButton
         {
@@ -99,7 +100,6 @@
             line-height: 1.6;
             margin-bottom: 20px;
         }
-        
         .signature
         {
             font-style: italic;
@@ -108,28 +108,33 @@
         }
         @keyframes shake
         {
-            0%, 100% {transform: translateX(0);}
-            10%, 30%, 50%, 70%, 90% {transform: translateX(-8px);}
-            20%, 40%, 60%, 80% {transform: translateX(8px);}
+            0%, 100% {transform: translateX(0); border-color: #9c27b0;}
+            10%, 30%, 50%, 70%, 90% {transform: translateX(-8px); border-color: #f44336;} /* Đổi màu viền khi rung */
+            20%, 40%, 60%, 80% {transform: translateX(8px); border-color: #f44336;}
         }
         .shake
         {
             animation: shake 0.5s;
         }
-        .snowflake 
+        .particle 
         {
             position: fixed;
             top: -10px;
-            border-radius: 50%;
             pointer-events: none;
             opacity: 0.8;
             animation: fall linear infinite;
             z-index: 1;
         }
+        .heart
+        {
+            color: #e91e63;
+            text-shadow: 0 0 5px rgba(233, 30, 99, 0.5);
+            
+        }
         @keyframes fall 
         {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(100vh); }
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
         }
         .tiger-icon 
         {
@@ -191,56 +196,68 @@
         const passwordInput = document.getElementById('passwordInput');
         function checkPassword()
         {
-            const input=passwordInput.value;
-            const lockScreen=document.getElementById('lockScreen');
-            const cardContent=document.getElementById('cardContent');
-            if(input==CORRECT_PASSWORD)
+            const input = passwordInput.value;
+            const lockScreen = document.getElementById('lockScreen');
+            const cardContent = document.getElementById('cardContent');
+            if(input === CORRECT_PASSWORD)
             {
-                lockScreen.style.display='none';
-                cardContent.style.display='block';
-                document.body.style.backgroundColor='#e1bee7';
-                createSnowflakes(50);
+                lockScreen.style.display = 'none';
+                cardContent.style.display = 'block';
+                document.body.style.backgroundColor = '#e1bee7';
+                createParticles(40, 'heart'); 
+                createParticles(20, 'snowflake'); 
                 birthdayAudio.play().catch(error => 
                 {
                     console.log('Không thể phát âm thanh tự động:', error);
                 }); 
-                
             }
             else
             {
-                const inputElement=passwordInput;
+                const inputElement = passwordInput;
                 inputElement.classList.add('shake');
                 setTimeout(()=>
                 {
                     inputElement.classList.remove('shake');
+                    inputElement.value = '';
+                    inputElement.focus();
                 }, 500)
             }
         }
-        function createSnowflakes(count) 
+        function createParticles(count, type) 
         {
-            const colors = 
+            const heartColors = ['#FF4081', '#E91E63', '#C2185B', '#F8BBD0', '#FFCDD2']; 
+            const snowflakeColors = 
             [
                 '#FFEB3B', '#F44336', '#E91E63', '#9C27B0', 
                 '#2196F3', '#00BCD4', '#4CAF50', '#FF9800', '#FFFFFF'
             ];
             for (let i = 0; i < count; i++) 
             {
-                const snowflake = document.createElement('div');
-                snowflake.classList.add('snowflake');
-                const size = Math.random() * 5 + 5; 
-                snowflake.style.width = `${size}px`;
-                snowflake.style.height = `${size}px`;
-                snowflake.style.left = `${Math.random() * 100}%`;
+                const particle = document.createElement('div');
+                particle.classList.add('particle', type);
+                const size = Math.random() * 15 + 15;
                 const duration = Math.random() * 10 + 5; 
-                snowflake.style.animationDuration = `${duration}s`;
-                snowflake.style.animationDelay = `-${Math.random() * 5}s`;
-                const randomColor = colors[Math.floor(Math.random() * colors.length)];
-                snowflake.style.backgroundColor = randomColor;
-                snowflake.style.boxShadow = `0 0 5px ${randomColor}`;
-                document.body.appendChild(snowflake);
-                snowflake.addEventListener('animationend', () => 
+                particle.style.animationDuration = `${duration}s`;
+                particle.style.animationDelay = `-${Math.random() * 5}s`;
+                particle.style.left = `${Math.random() * 100}%`;
+                if (type === 'heart') {
+                    particle.innerHTML = '&#10084;';
+                    particle.style.color = heartColors[Math.floor(Math.random() * heartColors.length)];
+                    particle.style.fontSize = `${Math.random() * 1.5 + 1.2}em`;
+                    particle.style.transform = `scale(${Math.random() * 0.5 + 0.8})`;
+                } else if (type === 'snowflake') {
+                    particle.style.borderRadius = '50%';
+                    particle.style.width = `${size * 0.5}px`;
+                    particle.style.height = `${size * 0.5}px`;
+                    const randomColor = snowflakeColors[Math.floor(Math.random() * snowflakeColors.length)];
+                    particle.style.backgroundColor = randomColor;
+                    particle.style.boxShadow = `0 0 5px ${randomColor}`;
+                }
+                
+                document.body.appendChild(particle);
+                particle.addEventListener('animationend', () => 
                 {
-                    snowflake.remove();
+                    particle.remove();
                 });
             }
         }
